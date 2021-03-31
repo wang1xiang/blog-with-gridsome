@@ -20,3 +20,4 @@ This is the project you get when you run `gridsome create new-project`.
 - 将 index.html 中的内容复制到 pages/index.vue 中
 - 启动项目，访问正常，需要复制图片到 static/img/目录下，修改图片路径为/
 - 将<nav>和<footer>标签放入 layouts/Default.vue 中，添加默认插槽<slot />
+- 添加页面Post.vue、About.vue、Contact.vue

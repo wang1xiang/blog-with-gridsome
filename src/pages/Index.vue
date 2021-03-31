@@ -97,8 +97,9 @@
 
 <script>
 export default {
+  name: 'Home',
   metaInfo: {
-    title: 'Hello, world!',
+    title: 'Home',
   },
 }
 </script>

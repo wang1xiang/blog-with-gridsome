@@ -6,5 +6,13 @@
 
 module.exports = {
   siteName: 'Gridsome',
-  plugins: []
+  plugins: [
+    {
+      use: '@gridsome/source-filesystem', // 插件
+      options: {
+        typeName: 'BlogPost', // 类型，对应GraphQL中的查询
+        path: './content/blog/**/*.md', // 文件路径
+      },
+    }
+  ],
 }

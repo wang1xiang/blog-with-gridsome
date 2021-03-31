@@ -1,0 +1,9 @@
+*.log
+.cache
+.DS_Store
+src/.temp
+/.history
+node_modules
+dist
+.env
+.env.*

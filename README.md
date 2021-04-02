@@ -504,16 +504,18 @@ This is the project you get when you run `gridsome create new-project`.
 
   - 基本设置
 
+    设置博客首页标题、副标题和封面
+
     处理网站标题和副标题、包括网站首页封面，都可以统一管理起来，设计统一数据结构，在页面展示即可
 
     Content Type 相当于集合，而此时只需要创建单个的数据节点，选择 Single Type
 
     在 strapi 中新增一个 Single Type(单一类型)，名称为 General，并添加三个字段，title、subtitle 和 cover
-  
-    保存成功后，在general中添加相应字段并保存，对其配置find权限
-    
-    接着集成到网站当中去使用，配置gridsome.config.js的 plugins 选项
-    
+
+    保存成功后，在 general 中添加相应字段并保存，对其配置 find 权限
+
+    接着集成到网站当中去使用，配置 gridsome.config.js 的 plugins 选项
+
     ```js
     ...
     {
@@ -530,13 +532,13 @@ This is the project you get when you run `gridsome create new-project`.
             //   identifier: '',
             //   password: '',
             // },
-        },
+    },
     },
     ...
     ```
-    
+
     在/pages/index.vue`中，读取 GraphQL 数据层的数据，并在视图中渲染
-    
+
     ```vue
     <template>
       <Layout>
@@ -561,7 +563,7 @@ This is the project you get when you run `gridsome create new-project`.
         ...
       </Layout>
     </template>
-    
+
     <page-query>
     query ($page: Int){
        ...
@@ -575,11 +577,11 @@ This is the project you get when you run `gridsome create new-project`.
               url
             }
           }
-        }
+    }
       }
     }
     </page-query>
-    
+
     <script>
     ...
       // 使用计算属性
@@ -591,7 +593,67 @@ This is the project you get when you run `gridsome create new-project`.
     ...
     </script>
     <style></style>
+    ```
+
+  - 联系我页面实现
+  
+    使用纯客户端实现并将数据保存
+  
+    创建contact集合，根据页面需要添加name、email、phone和message字段，并赋予contact集合create权限
+  
+    使用postman进行测试，localhost:1337/contacts添加数据并测试
+  
+    修改/pages/contact.vue页面
+  
+    ```vue
+    <template>
+      <!-- 使用v-model绑定表单数据、并添加按钮点击事件 -->
+    </template>
+    
+    <script>
+    import axios from 'axios'
+    export default {
+      name: 'Contact',
+      metaInfo: {
+        title: 'Contact',
+      },
+      data() {
+        return {
+          form: {
+            name: '',
+            email: '',
+            phone: '',
+            message: '',
+          },
+        }
+      },
+      methods: {
+        // 此处应该加入表单校验
+        async onSubmit() {
+          try {
+            const { data } = await axios({
+              method: 'POST',
+              url: 'http://localhost:1337/contacts',
+              data: this.form,
+            })
+            this.form = {
+              name: '',
+              email: '',
+              phone: '',
+              message: '',
+            }
+            window.alert('发送成功')
+          } catch (err) {
+            window.alert('发送失败')
+            throw new Error(err)
+          }
+        },
+      },
+    }
+    </script>
+    <style></style>
     
     ```
   
-  -
+  - 
+

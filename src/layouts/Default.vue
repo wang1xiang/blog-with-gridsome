@@ -21,13 +21,13 @@
               <g-link class="nav-link" to="/">Home</g-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.html">About</a>
+              <g-link class="nav-link" to="/about">About</g-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="post.html">Sample Post</a>
+              <g-link class="nav-link" to="/post/9">Sample Post</g-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="contact.html">Contact</a>
+              <g-link class="nav-link" to="/contact">Contact</g-link>
             </li>
           </ul>
         </div>
@@ -77,5 +77,4 @@
   </div>
 </template>
 
-<style>
-</style>
+<style></style>

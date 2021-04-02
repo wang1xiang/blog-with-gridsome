@@ -203,6 +203,51 @@ This is the project you get when you run `gridsome create new-project`.
   
   - 加载[分页组件](https://gridsome.org/docs/pagination/#paginate-data)
   
+    引入并注册Pager组件，页面中添加，查询时添加pageInfo
+  
+    ```html
+    ...
+    <!-- Pager -->
+    <Pager :info="$page.posts.pageInfo"/>
+    ...
+    
+    query ($page: Int){
+    	posts: allStrapiPost (perPage: 2, page: $page) @paginate{
+        pageInfo {
+          totalPages
+          currentPage
+        }
+    		edges {
+          node {
+            id
+            title
+            created_name {
+              id
+              firstname
+              lastname
+            }
+            created_at
+            updated_at
+            tags {
+              id
+              title
+            }
+          }
+        }
+      }
+    }
+    </page-query>
+    import { Pager } from 'gridsome'
+    export default {
+      name: 'Home',
+      components: {
+        Pager
+      },
+    }
+    ```
+  
+  - 加载文章详情
+  
     
   
   - 

@@ -20,14 +20,14 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div v-for="item in $page.posts.edges" class="post-preview" :key="item.node.id">
-            <a href="post.html">
+            <g-link :to="`/post/${item.node.id}`">
               <h2 class="post-title">
                 {{ item.node.title }}
               </h2>
               <h3 class="post-subtitle">
                 {{ item.node.title }}
               </h3>
-            </a>
+            </g-link>
             <p class="post-meta">
               Posted by
               <a href="#">{{ item.node.created_name.firstname + item.node.created_name.lastname }}</a>

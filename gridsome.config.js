@@ -19,7 +19,8 @@ module.exports = {
       options: {
         apiURL: 'http://localhost:1337',
         queryLimit: 1000, // Defaults to 100
-        contentTypes: ['post'],
+        contentTypes: ['post'], // StrapiPost
+        // typeName: 'Strapi',
         // singleTypes: ['impressum'],
         // Possibility to login with a Strapi user,
         // when content types are not publicly available (optional).
@@ -30,4 +31,14 @@ module.exports = {
       },
     },
   ],
+  // 详情的模板页面 根据对应内容类型创建模板
+  // 模板名称StrapiPost一定要写集合的名字 此时集合由'@gridsome/source-strapi'生成
+  templates: {
+    StrapiPost: [
+      {
+        path: '/post/:id', // 详情对应路由
+        component: './src/templates/Post.vue',
+      },
+    ],
+  },
 }

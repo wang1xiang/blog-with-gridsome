@@ -67,24 +67,25 @@ This is the project you get when you run `gridsome create new-project`.
     ```
 
 - 使用 strapi 接口数据
-  
-- [快速开始](https://strapi.io/documentation/developer-docs/latest/getting-started/quick-start.html#_1-install-strapi-and-create-a-new-project)安装并启动strapi应用，安装成功打开[**http://localhost:1337/**](http://localhost:1337/admin)，创建Content Type，比如post，添加id、title和content字段
-  
+
+- [快速开始](https://strapi.io/documentation/developer-docs/latest/getting-started/quick-start.html#_1-install-strapi-and-create-a-new-project)安装并启动 strapi 应用，安装成功打开[**http://localhost:1337/**](http://localhost:1337/admin)，创建 Content Type，比如 post，添加 id、title 和 content 字段
+
   - 分配权限
-  
-    需要给publish角色以下权限，就可在postman中使用
-  
+
+    需要给 publish 角色以下权限，就可在 postman 中使用
+
     ![image-20210401081645397](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210401081645397.png)
-  
+
   - 使用 postman 测试，[符合 REST API 的规范](https://strapi.io/documentation/developer-docs/latest/developer-resources/content-api/content-api.html#api-endpoints)
-  
+
     ![image-20210401091814427](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210401091814427.png)
-  
-  - 
-  
+
+  -
+
 - 修改 Authenticated 权限，全选，添加用户，设置角色为 Authenticated
 
 - 在 postman 测试登陆
+
   ```json
   localhost:1337/auth/local
   {
@@ -111,15 +112,17 @@ This is the project you get when you run `gridsome create new-project`.
     }
   }
   ```
+
   - 得到 jwt 就可以请求了
-  
+
   - 可以使用 GraphQL 进行安装，安装 npm run strapi install graphql
-  
+
   - 安装完成，打开 http://localhost:1337/graphql即可访问
-  
+
   - 如何把 strapi 数据通过预取的方式集成到 gridsome 中，想要实现渲染前就拿到 strapi 中的数据，借助 gridsome 插件 [strapi](https://gridsome.org/plugins/@gridsome/source-strapi)
-  
+
   - 使用
+
     ```js
     export default {
       plugins: [
@@ -141,78 +144,66 @@ This is the project you get when you run `gridsome create new-project`.
       ],
     }
     ```
-    
+
   - 重启项目，启动完成后就可以在 grapjQL 中访问 strapi 中的数据了
-  
+
   - strapi 新增或删除数据后，gridsome 需要重启项目，因为在启动过程中拉取数据
-  
+
     ![image-20210401084547980](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210401084547980.png)
-  
-  - 删除 post，重新创建，添加字段 title、content、cover、is_publish、created_name关联user
-  
+
+  - 删除 post，重新创建，添加字段 title、content、cover、is_publish、created_name 关联 user
+
   - 创建 tags
-  
+
   - 重启 gridsome，发现报错，因为没有权限，重置 post 和 tag 的权限
-  
+
   - 修改页面，添加查询
-  
+
     ```html
-    <div v-for="item in $page.posts.edges" class="post-preview" :key="item.node.id">
-        <a href="post.html">
-            <h2 class="post-title">
-                {{ item.node.title }}
-            </h2>
-            <h3 class="post-subtitle">
-                {{ item.node.title }}
-            </h3>
-        </a>
-        <p class="post-meta">
-            Posted by
-            <a href="#">{{ item.node.created_name.firstname + item.node.created_name.lastname }}</a>
-            {{ item.node.created_at }}
-        </p>
-        <span v-for="tag in item.node.tags" :key="tag.id">
-            <a href="">{{ tag.title }}</a>
-            &nbsp;&nbsp;
-        </span>
-        <hr />
+    <div
+      v-for="item in $page.posts.edges"
+      class="post-preview"
+      :key="item.node.id"
+    >
+      <a href="post.html">
+        <h2 class="post-title">
+          {{ item.node.title }}
+        </h2>
+        <h3 class="post-subtitle">
+          {{ item.node.title }}
+        </h3>
+      </a>
+      <p class="post-meta">
+        Posted by
+        <a href="#"
+          >{{ item.node.created_name.firstname + item.node.created_name.lastname
+          }}</a
+        >
+        {{ item.node.created_at }}
+      </p>
+      <span v-for="tag in item.node.tags" :key="tag.id">
+        <a href="">{{ tag.title }}</a>
+        &nbsp;&nbsp;
+      </span>
+      <hr />
     </div>
-    
+
     <page-query>
-    query {
-    	posts: allStrapiPost {
-    		edges {
-          node {
-            id
-            title
-            created_name {
-              id
-              firstname
-              lastname
-            }
-            created_at
-            updated_at
-            tags {
-              id
-              title
-            }
-          }
-        }
-      }
-    }
+      query { posts: allStrapiPost { edges { node { id title created_name { id
+      firstname lastname } created_at updated_at tags { id title } } } } }
     </page-query>
     ```
-  
+
   - 加载[分页组件](https://gridsome.org/docs/pagination/#paginate-data)
-  
-    引入并注册Pager组件，页面中添加，查询时添加pageInfo
-  
+
+    引入并注册 Pager 组件，页面中添加，查询时添加 pageInfo
+
     ```html
     ...
     <!-- Pager -->
     <Pager :info="$page.posts.pageInfo"/>
     ...
-    
+
     query ($page: Int){
     	posts: allStrapiPost (perPage: 2, page: $page) @paginate{
         pageInfo {
@@ -247,11 +238,11 @@ This is the project you get when you run `gridsome create new-project`.
       },
     }
     ```
-  
+
   - 加载文章详情
-  
-    修改gridsome.config.js，添加templates
-  
+
+    修改 gridsome.config.js，添加 templates
+
     ```js
      // 详情的模板页面 根据对应内容类型创建模板
     // 模板名称StrapiPost一定要写集合的名字 此时集合由'@gridsome/source-strapi'生成
@@ -264,16 +255,23 @@ This is the project you get when you run `gridsome create new-project`.
         ]
     },
     ```
-  
-    创建templates/Post.vue文章详情模板
-  
+
+    创建 templates/Post.vue 文章详情模板
+
     查询数据，替换模板
-  
+
     ```vue
     <template>
       <Layout>
         <!-- Page Header -->
-        <header class="masthead" :style="{backgroundImage: `url(http://localhost:1337${$page.post.cover.url})`}">
+        <header
+          class="masthead"
+          :style="{
+            backgroundImage: `url(http://localhost:1337${
+              $page.post.cover.url
+            })`,
+          }"
+        >
           <div class="overlay"></div>
           <div class="container">
             <div class="row">
@@ -285,28 +283,32 @@ This is the project you get when you run `gridsome create new-project`.
                   </h2>
                   <span class="meta"
                     >Posted by
-                    <a href="#">{{ $page.post.created_name.firstname + $page.post.created_name.lastname  }}</a>
-                    on {{$page.post.created_at}}</span
+                    <a href="#">{{
+                      $page.post.created_name.firstname +
+                        $page.post.created_name.lastname
+                    }}</a>
+                    on {{ $page.post.created_at }}</span
                   >
                 </div>
               </div>
             </div>
           </div>
         </header>
-    
+
         <!-- Post Content -->
         <article>
           <div class="container">
             <div class="row">
-              <div class="col-lg-8 col-md-10 mx-auto" v-html="$page.post.content">
-              </div>
+              <div
+                class="col-lg-8 col-md-10 mx-auto"
+                v-html="$page.post.content"
+              ></div>
             </div>
           </div>
         </article>
       </Layout>
     </template>
-    
-    
+
     <page-query>
     query ($id: ID!){
     	post: strapiPost  (id: $id) {
@@ -330,49 +332,66 @@ This is the project you get when you run `gridsome create new-project`.
     }
     </page-query>
     <script>
-    
     export default {
       name: 'Post',
       metaInfo: {
         title: 'Post',
-      }
+      },
     }
     </script>
     <style></style>
     ```
-  
-  - 处理markdown格式文档
-  
-    使用[markdown-it](https://github.com/markdown-it/markdown-it)处理markdown格式数据
-  
+
+    修改/pages/index.vue，a 标签为 g-link 标签
+
+    ```vue
+    ...
+    <g-link :to="`/post/${item.node.id}`">
+        <h2 class="post-title">
+            {{ item.node.title }}
+        </h2>
+        <h3 class="post-subtitle">
+            {{ item.node.title }}
+        </h3>
+    </g-link>
+    ...
+    ```
+
+  - 处理 markdown 格式文档
+
+    使用[markdown-it](https://github.com/markdown-it/markdown-it)处理 markdown 格式数据
+
     ```vue
     <template>
-    ...
-     <div class="col-lg-8 col-md-10 mx-auto" v-html="mdToHtml($page.post.content)"></div>
-    ...
+      ...
+      <div
+        class="col-lg-8 col-md-10 mx-auto"
+        v-html="mdToHtml($page.post.content)"
+      ></div>
+      ...
     </template>
     <script>
     import MarkdownIt from 'markdown-it'
     const md = new MarkdownIt()
-    
+
     export default {
       name: 'Post',
       metaInfo: {
         title: 'Post',
       },
       methods: {
-        mdToHtml (markdown) {
+        mdToHtml(markdown) {
           return md.render(markdown)
-        }
-      }
+        },
+      },
     }
     </script>
     ```
-  
+
   - 文章标签
-  
-    修改gridsome.config.js，contentTypes添加tag
-  
+
+    修改 gridsome.config.js，contentTypes 添加 tag
+
     ```js
     	{
           use: '@gridsome/source-strapi',
@@ -391,25 +410,28 @@ This is the project you get when you run `gridsome create new-project`.
           },
         },
     ```
-  
-    添加tag模板
-  
+
+    添加 tag 模板
+
     ```js
     StrapiTag: [
-        {
-            path: '/tag/:id', // 详情对应路由
-            component: './src/templates/Tag.vue',
-        },
+      {
+        path: '/tag/:id', // 详情对应路由
+        component: './src/templates/Tag.vue',
+      },
     ]
     ```
-  
-    创建/templates/Tag.vue模板
-  
+
+    创建/templates/Tag.vue 模板
+
     ```vue
     <template>
       <Layout>
         <!-- Page Header -->
-        <header class="masthead" style="background-image: url('/img/home-bg.jpg')">
+        <header
+          class="masthead"
+          style="background-image: url('/img/home-bg.jpg')"
+        >
           <div class="overlay"></div>
           <div class="container">
             <div class="row">
@@ -421,12 +443,16 @@ This is the project you get when you run `gridsome create new-project`.
             </div>
           </div>
         </header>
-    
+
         <!-- Main Content -->
         <div class="container">
           <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
-              <div v-for="item in $page.tag.posts" class="post-preview" :key="item.id">
+              <div
+                v-for="item in $page.tag.posts"
+                class="post-preview"
+                :key="item.id"
+              >
                 <g-link :to="`/post/${item.id}`">
                   <h2 class="post-title">
                     {{ item.title }}
@@ -438,7 +464,7 @@ This is the project you get when you run `gridsome create new-project`.
                 <hr />
               </div>
               <!-- Pager -->
-              <Pager :info="$page.posts.pageInfo"/>
+              <Pager :info="$page.posts.pageInfo" />
             </div>
           </div>
         </div>
@@ -456,22 +482,116 @@ This is the project you get when you run `gridsome create new-project`.
       }
     }
     </page-query>
-    
+
     <script>
-    
     export default {
-      name: 'Tag'
+      name: 'Tag',
     }
-    
     </script>
-    <style>
-    </style>
+    <style></style>
     ```
-  
-    
-  
+
+    修改/pages/index.vue，a 标签为 g-link 标签
+
+    ```vue
+    ...
+    <span v-for="tag in item.node.tags" :key="tag.id">
+        <g-link href="" :to="`/tag/${tag.id}`">{{ tag.title }}</g-link>
+        &nbsp;&nbsp;
+    </span>
+    ...
+    ```
+
   - 基本设置
 
+    处理网站标题和副标题、包括网站首页封面，都可以统一管理起来，设计统一数据结构，在页面展示即可
 
+    Content Type 相当于集合，而此时只需要创建单个的数据节点，选择 Single Type
 
-
+    在 strapi 中新增一个 Single Type(单一类型)，名称为 General，并添加三个字段，title、subtitle 和 cover
+  
+    保存成功后，在general中添加相应字段并保存，对其配置find权限
+    
+    接着集成到网站当中去使用，配置gridsome.config.js的 plugins 选项
+    
+    ```js
+    ...
+    {
+        use: '@gridsome/source-strapi',
+        options: {
+            apiURL: 'http://localhost:1337',
+            queryLimit: 1000, // Defaults to 100
+            contentTypes: ['post', 'tag'], // StrapiPost配置集合
+            // typeName: 'Strapi',
+            singleTypes: ['general'], // 配置单节点
+            // Possibility to login with a Strapi user,
+            // when content types are not publicly available (optional).
+            // loginData: {
+            //   identifier: '',
+            //   password: '',
+            // },
+        },
+    },
+    ...
+    ```
+    
+    在/pages/index.vue`中，读取 GraphQL 数据层的数据，并在视图中渲染
+    
+    ```vue
+    <template>
+      <Layout>
+        <header
+          class="masthead"
+          :style="{
+            backgroundImage: `url(http://localhost:1337${general.cover.url})`,
+          }"
+        >
+          <div class="overlay"></div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                  <h1>{{ general.title }}</h1>
+                  <span class="subheading">{{ general.subtitle }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        ...
+      </Layout>
+    </template>
+    
+    <page-query>
+    query ($page: Int){
+       ...
+      allStrapiGeneral {
+        edges {
+          node {
+            id
+            title
+            subtitle
+            cover {
+              url
+            }
+          }
+        }
+      }
+    }
+    </page-query>
+    
+    <script>
+    ...
+      // 使用计算属性
+      computed: {
+        general() {
+          return this.$page.allStrapiGeneral.edges[0].node
+        },
+      },
+    ...
+    </script>
+    <style></style>
+    
+    ```
+  
+  -

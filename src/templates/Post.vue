@@ -26,7 +26,7 @@
     <article>
       <div class="container">
         <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto" v-html="$page.post.content">
+          <div class="col-lg-8 col-md-10 mx-auto" v-html="mdToHtml($page.post.content)">
           </div>
         </div>
       </div>
@@ -51,11 +51,19 @@ query ($id: ID!){
 }
 </page-query>
 <script>
+import MarkdownIt from 'markdown-it'
+const md = new MarkdownIt()
+
 export default {
   name: 'Post',
   metaInfo: {
-    title: 'Pst',
+    title: 'Post',
   },
+  methods: {
+    mdToHtml (markdown) {
+      return md.render(markdown)
+    }
+  }
 }
 </script>
 <style></style>

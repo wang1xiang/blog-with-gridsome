@@ -19,7 +19,7 @@ module.exports = {
       options: {
         apiURL: 'http://localhost:1337',
         queryLimit: 1000, // Defaults to 100
-        contentTypes: ['post'], // StrapiPost
+        contentTypes: ['post', 'tag'], // StrapiPost
         // typeName: 'Strapi',
         // singleTypes: ['impressum'],
         // Possibility to login with a Strapi user,
@@ -38,6 +38,12 @@ module.exports = {
       {
         path: '/post/:id', // 详情对应路由
         component: './src/templates/Post.vue',
+      },
+    ],
+    StrapiTag: [
+      {
+        path: '/tag/:id', // 详情对应路由
+        component: './src/templates/Tag.vue',
       },
     ],
   },

@@ -34,7 +34,7 @@
               {{ item.node.created_at }}
             </p>
             <span v-for="tag in item.node.tags" :key="tag.id">
-              <a href="">{{ tag.title }}</a>
+              <g-link href="" :to="`/tag/${tag.id}`">{{ tag.title }}</g-link>
               &nbsp;&nbsp;
              </span>
             <hr />

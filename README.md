@@ -146,6 +146,8 @@ This is the project you get when you run `gridsome create new-project`.
   
   - strapi 新增或删除数据后，gridsome 需要重启项目，因为在启动过程中拉取数据
   
+    ![image-20210401084547980](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210401084547980.png)
+  
   - 删除 post，重新创建，添加字段 title、content、cover、is_publish、created_name关联user
   
   - 创建 tags
@@ -248,12 +250,228 @@ This is the project you get when you run `gridsome create new-project`.
   
   - 加载文章详情
   
+    修改gridsome.config.js，添加templates
+  
+    ```js
+     // 详情的模板页面 根据对应内容类型创建模板
+    // 模板名称StrapiPost一定要写集合的名字 此时集合由'@gridsome/source-strapi'生成
+    templates: {
+        StrapiPost: [
+            {
+                path: '/post/:id', // 详情对应路由
+                component: './src/templates/Post.vue',
+            },
+        ]
+    },
+    ```
+  
+    创建templates/Post.vue文章详情模板
+  
+    查询数据，替换模板
+  
+    ```vue
+    <template>
+      <Layout>
+        <!-- Page Header -->
+        <header class="masthead" :style="{backgroundImage: `url(http://localhost:1337${$page.post.cover.url})`}">
+          <div class="overlay"></div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="post-heading">
+                  <h1>{{ $page.post.title }}</h1>
+                  <h2 class="subheading">
+                    {{ $page.post.title }}
+                  </h2>
+                  <span class="meta"
+                    >Posted by
+                    <a href="#">{{ $page.post.created_name.firstname + $page.post.created_name.lastname  }}</a>
+                    on {{$page.post.created_at}}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+    
+        <!-- Post Content -->
+        <article>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 col-md-10 mx-auto" v-html="$page.post.content">
+              </div>
+            </div>
+          </div>
+        </article>
+      </Layout>
+    </template>
+    
+    
+    <page-query>
+    query ($id: ID!){
+    	post: strapiPost  (id: $id) {
+    		id
+        title
+        content
+        cover {
+          url
+        }
+        created_name {
+          id
+          firstname
+          lastname
+        }
+        created_at
+        tags {
+          id
+          title
+        }
+      }
+    }
+    </page-query>
+    <script>
+    
+    export default {
+      name: 'Post',
+      metaInfo: {
+        title: 'Post',
+      }
+    }
+    </script>
+    <style></style>
+    ```
+  
+  - 处理markdown格式文档
+  
+    使用[markdown-it](https://github.com/markdown-it/markdown-it)处理markdown格式数据
+  
+    ```vue
+    <template>
+    ...
+     <div class="col-lg-8 col-md-10 mx-auto" v-html="mdToHtml($page.post.content)"></div>
+    ...
+    </template>
+    <script>
+    import MarkdownIt from 'markdown-it'
+    const md = new MarkdownIt()
+    
+    export default {
+      name: 'Post',
+      metaInfo: {
+        title: 'Post',
+      },
+      methods: {
+        mdToHtml (markdown) {
+          return md.render(markdown)
+        }
+      }
+    }
+    </script>
+    ```
+  
+  - 文章标签
+  
+    修改gridsome.config.js，contentTypes添加tag
+  
+    ```js
+    	{
+          use: '@gridsome/source-strapi',
+          options: {
+            apiURL: 'http://localhost:1337',
+            queryLimit: 1000, // Defaults to 100
+            contentTypes: ['post', 'tag'], // StrapiPost
+            // typeName: 'Strapi',
+            // singleTypes: ['impressum'],
+            // Possibility to login with a Strapi user,
+            // when content types are not publicly available (optional).
+            // loginData: {
+            //   identifier: '',
+            //   password: '',
+            // },
+          },
+        },
+    ```
+  
+    添加tag模板
+  
+    ```js
+    StrapiTag: [
+        {
+            path: '/tag/:id', // 详情对应路由
+            component: './src/templates/Tag.vue',
+        },
+    ]
+    ```
+  
+    创建/templates/Tag.vue模板
+  
+    ```vue
+    <template>
+      <Layout>
+        <!-- Page Header -->
+        <header class="masthead" style="background-image: url('/img/home-bg.jpg')">
+          <div class="overlay"></div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                  <h1># {{ $page.tag.title }}</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+    
+        <!-- Main Content -->
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+              <div v-for="item in $page.tag.posts" class="post-preview" :key="item.id">
+                <g-link :to="`/post/${item.id}`">
+                  <h2 class="post-title">
+                    {{ item.title }}
+                  </h2>
+                  <h3 class="post-subtitle">
+                    {{ item.title }}
+                  </h3>
+                </g-link>
+                <hr />
+              </div>
+              <!-- Pager -->
+              <Pager :info="$page.posts.pageInfo"/>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    </template>
+    <page-query>
+    query ($id: ID!){
+        strapiTag  (id: $id) {
+        id
+        title
+        posts {
+          id
+          title
+        }
+      }
+    }
+    </page-query>
+    
+    <script>
+    
+    export default {
+      name: 'Tag'
+    }
+    
+    </script>
+    <style>
+    </style>
+    ```
+  
     
   
-  - 
+  - 基本设置
 
 
 
-![image-20210401084547980](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210401084547980.png)
 
-![image-20210401090055194](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210401090055194.png)

@@ -13,8 +13,8 @@
               </h2>
               <span class="meta"
                 >Posted by
-                <a href="#">Start Bootstrap</a>
-                on August 24, 2019</span
+                <a href="#">{{ $page.post.created_name.firstname + $page.post.created_name.lastname  }}</a>
+                on {{$page.post.created_at}}</span
               >
             </div>
           </div>
@@ -33,7 +33,6 @@
     </article>
   </Layout>
 </template>
-
 <page-query>
 query ($id: ID!){
 	post: strapiPost  (id: $id) {
@@ -43,6 +42,12 @@ query ($id: ID!){
     cover {
       url
     }
+    created_name {
+      id
+      firstname
+      lastname
+    }
+    created_at
     tags {
       id
       title

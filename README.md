@@ -760,19 +760,25 @@ This is the project you get when you run `gridsome create new-project`.
 
 使用[Vercel](https://vercel.com/login) 进行静态应用项目的部署
 
-基本使用
+**基本使用**
 
 - 使用gitHub登陆，选择`Continue With GitHub`
 
 - 登陆成功，选择`new Project`
 
-- 选择Import Git Repository，添加自己的git仓库到这里，选择import
+- 选择Import Git Repository，添加自己的git仓库，选择项目导入import
 
   ![image-20210403163231079](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403163231079.png)
 
-- 如果不需要修改build和环境变量，直接选择Deploy
+- 如果不需要修改build和环境变量，直接选择Deploy，等待Vercel部署打包完成
 
   ![image-20210403163433202](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403163433202.png)
 
-- 
+- 等待部署成功，点击visit，即可访问生成的静态站点
+
+  ![image-20210403165828150](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403165828150.png)
+
+**配置自动构建**
+
+配置strapi，当数据改变时，触发Vercel自动构建
 

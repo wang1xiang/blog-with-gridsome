@@ -782,4 +782,40 @@ This is the project you get when you run `gridsome create new-project`.
 
 配置strapi，当数据改变时，触发Vercel自动构建
 
+- 选择项目blog-with-gridsome，选择settings --> git --> Deploy Hooks，设置部署钩子
+
+  ![image-20210403171715153](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403171715153.png)
+
+- 点击create Hook，将生成的钩子地址复制到strapi中
+
+  ![image-20210403171740795](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403171740795.png)
+
+- 在strapi后台项目中，选择设置 --> Webhooks --> 创建新Hook，当数据更新操作时，请求webhooks，重新触发构建
+
+  ![image-20210403172046262](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403172046262.png)
+
+- 此时回到vercel，打开项目的Deployments部署记录，修改数据，当前页面会自动刷新
+
+  ![image-20210403172805290](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403172805290.png)
+
+- 等待部署完成，有时页面可能会有延时，需要手动刷新
+
+##### 使用GitHub Page+ GitHub Actions – 部署 Gridsome 应用
+
+- 在gridsome.config.js中修改pathPrefix为github项目路径
+
+  ```bash
+  pathPrefix: 'blog-with-gridsome/' #项目地址
+  ```
+
+- 重新打包，取消`.gitignore`中的`dist`，将dist目录上传到远程分支
+
+  ```bash
+  git subtree push --prefix dist origin gh-pages
+  ```
+
+- 项目对应的[settings](https://github.com/wang1xiang/blog-with-gridsome/settings)，GitHub Pages会自动加载gh-pages下的分支，点击上面的连接访问网站
+
+  ![image-20210403180137115](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403180137115.png)
+
 - 

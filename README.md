@@ -774,7 +774,7 @@ This is the project you get when you run `gridsome create new-project`.
 
   ![image-20210403163433202](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403163433202.png)
 
-- 等待部署成功，点击visit，即可访问生成的静态站点
+- 等待部署成功，点击[visit](https://blog-with-gridsome-kiyznjr0a-wang1xiang.vercel.app/)，即可访问生成的静态站点
 
   ![image-20210403165828150](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403165828150.png)
 
@@ -782,3 +782,4 @@ This is the project you get when you run `gridsome create new-project`.
 
 配置strapi，当数据改变时，触发Vercel自动构建
 
+- 

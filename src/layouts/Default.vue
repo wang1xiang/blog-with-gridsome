@@ -24,7 +24,7 @@
               <g-link class="nav-link" to="/about">About</g-link>
             </li>
             <li class="nav-item">
-              <g-link class="nav-link" to="/post/9">Sample Post</g-link>
+              <g-link class="nav-link" to="/about">Sample Post</g-link>
             </li>
             <li class="nav-item">
               <g-link class="nav-link" to="/contact">Contact</g-link>

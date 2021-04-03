@@ -654,6 +654,125 @@ This is the project you get when you run `gridsome create new-project`.
     <style></style>
     
     ```
-  
-  - 
+
+##### 部署strapi
+
+- 需要支持 Node 的服务器
+
+- 数据库 – 建议 MySQL 或者 MongoDB[写给前端的MySQL极简安装](https://gitee.com/lagoufed/fed-e-questions/blob/master/part3/%E5%86%99%E7%BB%99%E5%89%8D%E7%AB%AF%E7%9A%84MySQL%E6%9E%81%E7%AE%80%E5%AE%89%E8%A3%85.md)
+
+- strapi默认使用 sqlite 数据库，部署到线上时，不推荐使用
+
+- 切换数据库为mysql[configurations](https://strapi.io/documentation/developer-docs/latest/setup-deployment-guides/configurations.html#database)，将 config/database.js 替换为Mysql的配置
+
+  ```js
+  module.exports = ({ env }) => ({
+    defaultConnection: "default",
+    connections: {
+      default: {
+        connector: "bookshelf",
+        settings: {
+          client: "mysql",
+          host: env("DATABASE_HOST", "localhost"),
+          port: env.int("DATABASE_PORT", 3306),
+          database: env("DATABASE_NAME", "strapi"),
+          username: env("DATABASE_USERNAME", "root"),
+          password: env("DATABASE_PASSWORD", "329926"),
+        },
+        options: {},
+      },
+    },
+  });
+  ```
+
+- 修改 package.json，添加 mysql 依赖`npm install mysql --save`，如果不需要测试，则可以删除 sqlite3
+
+- 将项目上传到远程仓库[后台项目地址](https://github.com/wang1xiang/blog-backend)
+
+- 在服务器上克隆上传到项目地址`git clone https://github.com/wang1xiang/blog-backend.git`
+
+- 安装依赖`npm i`，打包项目`npm run build`，启动项目`npm run start`
+
+- 可以使用pm2`pm2 start npm -- run start --name blog-backend`启动项目，可以让node应用跑到后台
+
+- 安装成功，打开`http://106.75.190.29/admin`访问并重新加载数据
+
+##### 本地GridSome应用连接远程服务器
+
+- 修改gridsome.config.js
+
+  ```js
+  module.exports = {
+    siteName: 'Gridsome',
+    plugins: [
+     	...
+      {
+        use: '@gridsome/source-strapi',
+        options: {
+          apiURL: 'http://106.75.190.29:1337',
+          queryLimit: 1000, // Defaults to 100
+          contentTypes: ['post', 'tag'], // StrapiPost配置集合
+          // typeName: 'Strapi',
+          singleTypes: ['general']
+        },
+      },
+    ]
+  }
+  ```
+
+- apiURL可以使用环境变量的形式设定，[配置环境变量](https://gridsome.org/docs/environment-variables/)，添加.env.development和.env.production
+
+  ```js
+  // .env.development
+  GRIDSOME_API_URL=http://106.75.190.29:1337
+  // .env.production
+  GRIDSOME_API_URL=http://106.75.190.29:1337
+  // gridsome.config.js
+  {
+        use: '@gridsome/source-strapi',
+        options: {
+          apiURL: process.env.GRIDSOME_API_URL,
+          ...
+        },
+      },
+  ```
+
+  可以配置不同的ip地址，修改apiURL为process.env.GRIDSOME_API_URL，重启
+
+- 此时可以正常访问网站，当时发现图片加载有问题，需要设置图片路径，当然不能直接在模板中写`process.env.GRIDSOME_API_URL`，使用mixin代替
+
+  ```js
+  // main.js
+   Vue.mixin({
+      data() {
+        return {
+          GRIDSOME_API_URL: process.env.GRIDSOME_API_URL,
+        }
+      },
+    })
+  ```
+
+  使用ip的地方替换为GRIDSOME_API_URL即可
+
+- 打开应用`http://localhost:8080/`访问成功，图片正常加载，此时已联通GridSome客户端和服务器的strapi
+
+##### 使用Vercel – 部署 Gridsome 应用
+
+使用[Vercel](https://vercel.com/login) 进行静态应用项目的部署
+
+基本使用
+
+- 使用gitHub登陆，选择`Continue With GitHub`
+
+- 登陆成功，选择`new Project`
+
+- 选择Import Git Repository，添加自己的git仓库到这里，选择import
+
+  ![image-20210403163231079](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403163231079.png)
+
+- 如果不需要修改build和环境变量，直接选择Deploy
+
+  ![image-20210403163433202](C:\Users\xiang wang\AppData\Roaming\Typora\typora-user-images\image-20210403163433202.png)
+
+- 
 

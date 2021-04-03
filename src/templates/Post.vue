@@ -1,7 +1,12 @@
 <template>
   <Layout>
     <!-- Page Header -->
-    <header class="masthead" :style="{backgroundImage: `url(http://localhost:1337${$page.post.cover.url})`}">
+    <header
+      class="masthead"
+      :style="{
+        backgroundImage: `url(${GRIDSOME_API_URL}${$page.post.cover.url})`,
+      }"
+    >
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
@@ -13,8 +18,11 @@
               </h2>
               <span class="meta"
                 >Posted by
-                <a href="#">{{ $page.post.created_name.firstname + $page.post.created_name.lastname  }}</a>
-                on {{$page.post.created_at}}</span
+                <a href="#">{{
+                  $page.post.created_name.firstname +
+                    $page.post.created_name.lastname
+                }}</a>
+                on {{ $page.post.created_at }}</span
               >
             </div>
           </div>
@@ -26,8 +34,10 @@
     <article>
       <div class="container">
         <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto" v-html="mdToHtml($page.post.content)">
-          </div>
+          <div
+            class="col-lg-8 col-md-10 mx-auto"
+            v-html="mdToHtml($page.post.content)"
+          ></div>
         </div>
       </div>
     </article>
@@ -65,10 +75,10 @@ export default {
     title: 'Post',
   },
   methods: {
-    mdToHtml (markdown) {
+    mdToHtml(markdown) {
       return md.render(markdown)
-    }
-  }
+    },
+  },
 }
 </script>
 <style></style>
